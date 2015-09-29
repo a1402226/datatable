@@ -150,6 +150,28 @@ public class DataTableTest {
 	}
 	
 	@Test
+	public void filterRowsNotEqual() {
+		DataTableRow row;
+		dt.addCollumn("id", DataTable.TYPE_INT);
+		dt.addCollumn("class", DataTable.TYPE_STRING);
+		
+		for (int i = 1; i <= 100; i++) {
+			row = dt.createRow();
+			row.setValue("id", i);
+			row.setValue("class", (i % 2 == 0 ? "even" : "odd"));
+			dt.insertRow(row);
+		}
+		
+		DataTable filteredTable = dt.filterNotEqual("class", "even");
+		assertEquals(50, filteredTable.rowsCount());
+		for (int i = 0; i < 50; i++) {
+			row = filteredTable.getRow(i);
+			assertEquals((i+1)*2-1, row.getValue("id"));
+			assertEquals("odd", row.getValue("class"));
+		}
+	}
+	
+	@Test
 	public void sortRowsAscending() {
 		DataTableRow row;
 		dt.addCollumn("id", DataTable.TYPE_INT);

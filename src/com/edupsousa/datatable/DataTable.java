@@ -157,4 +157,20 @@ public class DataTable {
 		}
 		return output;
 	}
+	
+	public DataTable filterNotEqual(String collumn, Object value) {
+		DataTable output = new DataTable();
+		for (String collumnName : columnsTypes.keySet()) {
+			int type = columnsTypes.get(collumnName);
+			output.addCollumn(collumnName, type);
+		}
+		DataTableRow row;
+		for (int i = 0; i < this.rowsCount(); i++) {
+			row = this.getRow(i);
+			if (row.getValue(collumn)!=value){
+				output.insertRow(row);
+			}
+		}
+		return output;
+	}
 }

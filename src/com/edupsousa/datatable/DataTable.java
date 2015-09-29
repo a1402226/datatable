@@ -72,7 +72,7 @@ public class DataTable {
 	public String export(int format) {
 		DataTableRow row;
 		String output = "";
-		if (format==FORMAT_CSV) {
+		if (format == DataTable.FORMAT_CSV) {
 			for (String collumnName : columnsTypes.keySet()) {
 				output += collumnName + ";";
 			}
@@ -81,7 +81,7 @@ public class DataTable {
 				row = this.getRow(i);
 				for (String collumnName : columnsTypes.keySet()) {
 					if (columnsTypes.get(collumnName) == DataTable.TYPE_STRING) {
-					output += "\"" + row.getValue(collumnName) + "\";";
+						output += "\"" + row.getValue(collumnName) + "\";";
 					} else {
 						output += row.getValue(collumnName) + ";";
 					}
@@ -89,7 +89,7 @@ public class DataTable {
 				output += "\n";
 			}
 		}
-		if (format==FORMAT_HTML) {
+		if (format == DataTable.FORMAT_HTML) {
 			output += "<table>\n<tr>";
 			for (String collumnName : columnsTypes.keySet()) {
 				output += "<td>" + collumnName + "</td>";
@@ -113,7 +113,19 @@ public class DataTable {
 	}
 	
 	public DataTable filterEqual(String collumn, Object value) {
-		return null;
+		DataTable output = new DataTable();
+		for (String collumnName : columnsTypes.keySet()) {
+			int type = columnsTypes.get(collumnName);
+			output.addCollumn(collumnName, type);
+		}
+		DataTableRow row;
+		for (int i = 0; i < this.rowsCount(); i++) {
+			row = this.getRow(i);
+			if (row.getValue(collumn)==value){
+				output.insertRow(row);
+			}
+		}
+		return output;
 	}
 	
 	public DataTable sortAscending(String collumn) {

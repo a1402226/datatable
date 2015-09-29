@@ -193,6 +193,27 @@ public class DataTableTest {
 	}
 	
 	@Test
+	public void sortRowsDescending() {
+		DataTableRow row;
+		dt.addCollumn("id", DataTable.TYPE_INT);
+		dt.addCollumn("number", DataTable.TYPE_INT);
+		
+		for (int i = 0; i < 5; i++) {
+			row = dt.createRow();
+			row.setValue("id", i);
+			row.setValue("number", i);
+			dt.insertRow(row);
+		}
+		
+		DataTable sortedTable = dt.sortDescending("number");
+		for (int i = 0; i < 5; i++) {
+			row = sortedTable.getRow(i);
+			assertEquals(4-i, row.getValue("id"));
+			assertEquals(4-i, row.getValue("number"));						
+		}
+	}
+	
+	@Test
 	public void sortRowsTypeException() {
 		dt.addCollumn("name", DataTable.TYPE_STRING);
 		

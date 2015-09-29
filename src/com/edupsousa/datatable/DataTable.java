@@ -173,4 +173,34 @@ public class DataTable {
 		}
 		return output;
 	}
+	
+	public DataTable sortDescending(String collumn) {
+		if(columnsTypes.get(collumn)==TYPE_STRING){
+			throw new ClassCastException("Only Integer columns can be sorted.");
+		}
+		DataTable output = new DataTable();
+		for (String collumnName : columnsTypes.keySet()) {
+			int type = columnsTypes.get(collumnName);
+			output.addCollumn(collumnName, type);
+		}
+		DataTableRow[] rows = new DataTableRow[this.rowsCount()];
+		for (int i = 0; i < this.rowsCount(); i++){
+			rows[i] = this.getRow(i);
+		}
+		for (int i = 0; i < rows.length-1; i++){
+			for (int j = 0; j < rows.length-1; j++){
+				int x = (int)rows[j].getValue(collumn);
+				int y = (int)rows[j+1].getValue(collumn);
+				if(x>y){
+					DataTableRow temp = rows[j+1];
+					rows[j+1] = rows[j];
+					rows[j] = temp;
+				}
+			}
+		}
+		for (int i = rows.length-1; i >= 0; i--){
+			output.insertRow(rows[i]);
+		}
+		return output;
+	}
 }

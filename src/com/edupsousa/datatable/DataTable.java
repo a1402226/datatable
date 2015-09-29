@@ -72,7 +72,7 @@ public class DataTable {
 	public String export(int format) {
 		DataTableRow row;
 		String output = "";
-		if (format == DataTable.FORMAT_CSV) {
+		if (format==FORMAT_CSV) {
 			for (String collumnName : columnsTypes.keySet()) {
 				output += collumnName + ";";
 			}
@@ -81,13 +81,29 @@ public class DataTable {
 				row = this.getRow(i);
 				for (String collumnName : columnsTypes.keySet()) {
 					if (columnsTypes.get(collumnName) == DataTable.TYPE_STRING) {
-						output += "\"" + row.getValue(collumnName) + "\";";
+					output += "\"" + row.getValue(collumnName) + "\";";
 					} else {
 						output += row.getValue(collumnName) + ";";
 					}
 				}
 				output += "\n";
 			}
+		}
+		if (format==FORMAT_HTML) {
+			output += "<table>\n<tr>";
+			for (String collumnName : columnsTypes.keySet()) {
+				output += "<td>" + collumnName + "</td>";
+			}
+			output += "</tr>\n";
+			for (int i = 0; i < this.rowsCount(); i++) {
+				output += "<tr>";
+				row = this.getRow(i);
+				for (String collumnName : columnsTypes.keySet()) {
+					output += "<td>" + row.getValue(collumnName) + "</td>";
+				}
+				output += "</tr>\n";
+			}
+			output += "</table>\n";
 		}
 		return output;
 	}

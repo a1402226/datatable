@@ -13,6 +13,7 @@ public class DataTable {
 	
 	private LinkedHashMap<String, Integer> columnsTypes = new LinkedHashMap<String, Integer>();
 	private ArrayList<DataTableRow> rows = new ArrayList<DataTableRow>();
+	private ExportInterface export;
 	
 	public int columnsCount() {
 		return columnsTypes.size();
@@ -70,42 +71,13 @@ public class DataTable {
 	}
 
 	public String export(int format) {
-		DataTableRow row;
-		String output = "";
 		if (format == DataTable.FORMAT_CSV) {
-			for (String collumnName : columnsTypes.keySet()) {
-				output += collumnName + ";";
-			}
-			output += "\n";
-			for (int i = 0; i < this.rowsCount(); i++) {
-				row = this.getRow(i);
-				for (String collumnName : columnsTypes.keySet()) {
-					if (columnsTypes.get(collumnName) == DataTable.TYPE_STRING) {
-						output += "\"" + row.getValue(collumnName) + "\";";
-					} else {
-						output += row.getValue(collumnName) + ";";
-					}
-				}
-				output += "\n";
-			}
+			export = new ExportToCSV();
 		}
 		if (format == DataTable.FORMAT_HTML) {
-			output += "<table>\n<tr>";
-			for (String collumnName : columnsTypes.keySet()) {
-				output += "<td>" + collumnName + "</td>";
-			}
-			output += "</tr>\n";
-			for (int i = 0; i < this.rowsCount(); i++) {
-				output += "<tr>";
-				row = this.getRow(i);
-				for (String collumnName : columnsTypes.keySet()) {
-					output += "<td>" + row.getValue(collumnName) + "</td>";
-				}
-				output += "</tr>\n";
-			}
-			output += "</table>\n";
+			export = new ExportToHTML();
 		}
-		return output;
+		return export.export(this, columnsTypes);
 	}
 	
 	public void insertRowAt(DataTableRow row, int index) {

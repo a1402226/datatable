@@ -216,9 +216,16 @@ public class DataTableTest {
 	@Test
 	public void sortRowsTypeException() {
 		dt.addCollumn("name", DataTable.TYPE_STRING);
-
+		
 		try {
 			dt.sortAscending("name");
+		} catch (ClassCastException e) {
+			assertEquals("Only Integer columns can be sorted.", e.getMessage());
+			return;
+		}
+		
+		try {
+			dt.sortDescending("name");
 		} catch (ClassCastException e) {
 			assertEquals("Only Integer columns can be sorted.", e.getMessage());
 			return;

@@ -23,7 +23,7 @@ public class ExportToHTML implements ExportInterface {
 			output += "</tr>\n";
 		}
 		output += "</table>\n";
-	return output;
+		return output;
 	}
 
 }
